@@ -6,13 +6,11 @@ var FriendListItem = require('./FriendListItem.react');
 var FriendList = React.createClass({
 
   render: function() {
-    friendList = [];
-    for(var i = 0 ; i < 10 ; i ++){
-      friendList.push(<FriendListItem key={i} nama={i} />)
-    }
     return (
       <div className="friend-list">
-        {friendList}
+        {this.props.users.map(function(user, i){
+          return (<FriendListItem key={i} nama={user.username} />)
+        })}
       </div>
     );
   }

@@ -7,6 +7,9 @@ _currentUser = null;
 _allUsers = [];
 _messagesBag = [];
 
+var io = require('socket.io-client');
+
+
 
 var CHANGE_EVENT = 'change';
 var ChatStore = assign({}, EventEmitter.prototype, {
@@ -22,6 +25,9 @@ var ChatStore = assign({}, EventEmitter.prototype, {
   getCurrentUser: function(){
     return _currentUser;
   },
+  getAllUsers: function(){
+    return _allUsers;
+  },
   getAllMessage: function(){
     return _messagesBag;
   },
@@ -33,19 +39,52 @@ var ChatStore = assign({}, EventEmitter.prototype, {
   }
 });
 
+var socket = io();
+
+socket.on('user_login', function(user){
+  ChatStore.addMessage({author: 'system', text: user.username + ' has joined the room'});
+  ChatStore.emitChange();
+});
+
+socket.on('user_logout', function(user){
+  ChatStore.addMessage({author: 'system', text: user.username + ' has left the room'});
+  ChatStore.emitChange();
+});
+
+socket.on('users_list_change', function(users){
+  _allUsers = users;
+  ChatStore.emitChange();
+});
+
+socket.on('receive_new_message_from_server', function(message){
+  if(message.text == ''){
+    return;
+  }
+  ChatStore.addMessage(message);
+  ChatStore.emitChange();
+});
+
+
+
 
 ChatStore.dispatchToken = ChatAppDispatcher.register(function(payload){
   var action = payload.action;
   switch (action.type) {
-    case 'USER_JOIN_ROOM':
+    case 'USER_LOGIN':
+      socket.emit('user_login', action.user);
       ChatStore.setCurrentUser(action.user);
       ChatStore.emitChange();
       break;
+    case 'USER_LOGOUT':
+      socket.emit('user_logout', action.user);
+      ChatStore.setCurrentUser(null);
+      ChatStore.emitChange();
+      break;
     case 'RECEIVE_NEW_MESSAGE':
+      socket.emit('receive_new_message', action.message);
       if(action.message.text == ''){
         return;
       }
-      ChatStore.addMessage(action.message);
       ChatStore.emitChange();
       break;
     default:

@@ -1,6 +1,7 @@
 var ChatAppDispatcher = require('../dispatcher/ChatAppDispatcher');
 var $ = require('jquery');
 
+var ChatStore = require('../stores/ChatStore');
 
 var ChatAppAction = {
   sendMessage: function(data){
@@ -9,10 +10,17 @@ var ChatAppAction = {
       message: data
     });
   },
-  joinRoom: function(user){
+  login: function(user){
     ChatAppDispatcher.handleAction({
-      type: 'USER_JOIN_ROOM',
+      type: 'USER_LOGIN',
       user: user
+    });
+  },
+  logout: function(){
+
+    ChatAppDispatcher.handleAction({
+      type: 'USER_LOGOUT',
+      user: ChatStore.getCurrentUser()
     });
   }
 };

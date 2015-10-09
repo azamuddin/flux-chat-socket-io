@@ -6,7 +6,7 @@ var ChatAppAction = require('../actions/ChatAppAction');
 var Login = React.createClass({
   joinRoom: function(e){
     e.preventDefault();
-    ChatAppAction.joinRoom({
+    ChatAppAction.login({
       username: this.refs.username.value
     });
   },

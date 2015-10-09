@@ -7,11 +7,14 @@ var MessageBox = require('./MessageBox.react');
 var LoginBox = require('./Login.react');
 
 var ChatStore = require('./../stores/ChatStore');
+var ChatAppAction = require('./../actions/ChatAppAction');
+var SocketService = require('../SocketService');
 
 getStateFromStore = function(){
   return {
     messagesBag: ChatStore.getAllMessage(),
-    currentUser: ChatStore.getCurrentUser()
+    currentUser: ChatStore.getCurrentUser(),
+    allUsers: ChatStore.getAllUsers()
   };
 };
 
@@ -40,8 +43,8 @@ var ChatApp = React.createClass({
 
     return (
       <div className="chat-app">
-        <Header />
-        <FriendList />
+        <Header user={this.state.currentUser} />
+        <FriendList users={this.state.allUsers} />
         <MessageBox
           messages={this.state.messagesBag}
           />

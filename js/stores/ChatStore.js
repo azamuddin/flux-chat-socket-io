@@ -36,6 +36,9 @@ var ChatStore = assign({}, EventEmitter.prototype, {
   },
   setCurrentUser: function(user){
     _currentUser = user;
+  },
+  setAllUsers: function(users){
+    _allUsers = users;
   }
 });
 

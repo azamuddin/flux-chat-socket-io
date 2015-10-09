@@ -52,7 +52,7 @@ socket.on('user_logout', function(user){
 });
 
 socket.on('users_list_change', function(users){
-  _allUsers = users;
+  ChatStore.setAllUsers(users);
   ChatStore.emitChange();
 });
 
@@ -78,6 +78,7 @@ ChatStore.dispatchToken = ChatAppDispatcher.register(function(payload){
     case 'USER_LOGOUT':
       socket.emit('user_logout', action.user);
       ChatStore.setCurrentUser(null);
+      ChatStore.setAllUsers([]);
       ChatStore.emitChange();
       break;
     case 'RECEIVE_NEW_MESSAGE':

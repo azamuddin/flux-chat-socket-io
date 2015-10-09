@@ -35,7 +35,6 @@ var ChatAppAction = {
     });
   },
   logout: function(){
-
     ChatAppDispatcher.handleAction({
       type: 'USER_LOGOUT',
       user: ChatStore.getCurrentUser()

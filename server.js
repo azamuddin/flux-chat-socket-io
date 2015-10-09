@@ -33,6 +33,7 @@ var users = [];
 
 var io = require('socket.io').listen(server);
 io.on('connection', function(socket){
+  
   socket.on('user_login', function(user){
     users.push(user);
 
@@ -52,4 +53,7 @@ io.on('connection', function(socket){
   socket.on('receive_new_message', function(message){
     io.emit('receive_new_message_from_server', message);
   });
+
+
+
 });

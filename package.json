@@ -14,10 +14,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Muhammad Azamuddin",
-  "license": "ISC",
-  "devDependencies": {
-    "browserify": "^11.2.0",
-    "reactify": "^1.1.1",
-    "watchify": "^3.4.0"
-  }
+  "license": "ISC"
 }
